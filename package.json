@@ -1,0 +1,33 @@
+{
+  "name": "torch-memory-fs",
+  "version": "1.0.0",
+  "description": "A memory file system for myself.",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tqma113/torch-memory-fs.git"
+  },
+  "keywords": [
+    "memory",
+    "file system"
+  ],
+  "author": "Ma Tianqi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tqma113/torch-memory-fs/issues"
+  },
+  "homepage": "https://github.com/tqma113/torch-memory-fs#readme",
+  "devDependencies": {
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.13",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.1.0",
+    "typescript": "^3.9.5"
+  }
+}
