@@ -1,7 +1,7 @@
 {
-  "name": "torch-memory-fs",
+  "name": "memory-require",
   "version": "1.0.0",
-  "description": "A memory file system for myself.",
+  "description": "A require of memory file system for myself.",
   "main": "lib/index.js",
   "directories": {
     "test": "test"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tqma113/torch-memory-fs.git"
+    "url": "git+https://github.com/tqma113/memory-require.git"
   },
   "keywords": [
     "memory",
@@ -20,14 +20,19 @@
   "author": "Ma Tianqi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tqma113/torch-memory-fs/issues"
+    "url": "https://github.com/tqma113/memory-require/issues"
   },
-  "homepage": "https://github.com/tqma113/torch-memory-fs#readme",
+  "homepage": "https://github.com/tqma113/memory-require#readme",
   "devDependencies": {
     "@types/jest": "^26.0.0",
+    "@types/memory-fs": "^0.3.2",
     "@types/node": "^14.0.13",
     "jest": "^26.0.1",
+    "memory-fs": "^0.5.0",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5"
+  },
+  "peerDependencies": {
+    "memory-fs": "^0.5.0"
   }
 }
