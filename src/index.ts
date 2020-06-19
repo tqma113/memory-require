@@ -130,7 +130,6 @@ function load(id: string, memoryRequire: NodeRequire): MemoryModule {
     if (extension in memoryRequire.extensions) {
       const module = makeMemoryModule(id, memoryRequire)
       memoryRequire.extensions[extension as AllowExtension](module, id)
-      debugger
       return module
     } else {
       throw new Error(`the extension ${extension} of ${id} is not supported`)
