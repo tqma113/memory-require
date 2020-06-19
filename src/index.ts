@@ -8,11 +8,13 @@ interface MemoryModule extends NodeModule {
 
 type AllowExtension = '.js' | '.json' | '.node'
 
+const nativeRequire = require
+
 const FilenameExtensionRegex = /(?:\.([^.]+))?$/
 
 const isWindows = process.platform === 'win32'
 
-export default function makeMemoryRequireFunction(mfs: MFS): NodeRequire {
+export default function makeMemoryRequireFunction(mfs: MFS, require: NodeRequire = nativeRequire): NodeRequire {
   let cache: NodeJS.Dict<MemoryModule> = {}
   const extensions: NodeJS.RequireExtensions = {
     '.js': (module: MemoryModule, filename: string) => {
@@ -31,11 +33,13 @@ export default function makeMemoryRequireFunction(mfs: MFS): NodeRequire {
         filename,
         dirname
       )
+      cache[filename] = module
     },
     '.json':  (module: MemoryModule, filename: string) => {
       const content = mfs.readFileSync(filename, 'utf8')
       try {
-        module.exports = JSON.stringify(stripBOM(content));
+        module.exports = JSON.stringify(stripBOM(content))
+        cache[filename] = module
       } catch (err) {
         err.message = filename + ': ' + err.message;
         throw err;
@@ -43,10 +47,11 @@ export default function makeMemoryRequireFunction(mfs: MFS): NodeRequire {
     },
     '.node': (module: MemoryModule, filename: string) => {
       // @ts-ignore
-      return process.dlopen(
+      process.dlopen(
         module,
         path.toNamespacedPath(filename)
       )
+      cache[filename] = module
     }
   }
 
@@ -63,7 +68,7 @@ export default function makeMemoryRequireFunction(mfs: MFS): NodeRequire {
     }
   }
 
-  const memoryResolve = makeMemoryResolveFunction(mfs)
+  const memoryResolve = makeMemoryResolveFunction(mfs, require)
 
   let main: MemoryModule | undefined = require.main
 
@@ -81,13 +86,22 @@ export default function makeMemoryRequireFunction(mfs: MFS): NodeRequire {
   return memoryRequire
 }
 
-export function makeMemoryResolveFunction(mfs: MFS): RequireResolve {
+export function makeMemoryResolveFunction(mfs: MFS, require: NodeRequire): RequireResolve {
   const memoryResolve = (id: string, options?: { paths?: string[]; }): string => {
-    return path.basename(id)
+    try {
+      const stat = mfs.statSync(id)
+      if (stat.isFile || stat.isDirectory) {
+        return id
+      } else {
+        return require.resolve(id)
+      }
+    } catch {
+      return require.resolve(id)
+    }
   }
 
   const paths = (request: string): string[] | null => {
-    return resolvePaths(request)
+    return require.resolve.paths(request)
   }
 
   return Object.assign(
