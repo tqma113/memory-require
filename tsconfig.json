@@ -22,7 +22,8 @@
     "jsx": "react",
     "lib": [ "esnext" ],
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "rootDir": "."
   },
